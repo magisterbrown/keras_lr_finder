@@ -81,11 +81,7 @@ class LRFinder:
                         'or use the `keras.utils.Sequence` class.')
         self.lr_mult = (float(end_lr) / float(start_lr)) ** (float(1) / float(epochs * steps_per_epoch))
 
-        # Save weights into a file
-        initial_weights = self.model.get_weights()
 
-        # Remember the original learning rate
-        original_lr = K.get_value(self.model.optimizer.lr)
 
         # Set the initial learning rate
         K.set_value(self.model.optimizer.lr, start_lr)
@@ -99,11 +95,6 @@ class LRFinder:
                                  callbacks=[callback],
                                  **kw_fit)
 
-        # Restore the weights to the state before model fitting
-        self.model.set_weights(initial_weights)
-
-        # Restore the original learning rate
-        K.set_value(self.model.optimizer.lr, original_lr)
 
     def plot_loss(self, n_skip_beginning=10, n_skip_end=5, x_scale='log'):
         """
